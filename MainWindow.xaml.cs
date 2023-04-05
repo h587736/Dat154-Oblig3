@@ -1,4 +1,6 @@
-﻿using Oblig3.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Oblig3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +31,12 @@ namespace Oblig3
         public MainWindow()
         {
             InitializeComponent();
+
             Students = dx.Students.Local;
+
+            dx.Students.Load();
+
+            studentList.DataContext = Students.OrderBy(s => s.Studentname);
         }
     }
 }

@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <ListView Name="studentList" ItemsSource="{Binding}">
+            <ListView.View>
+            <GridView>
+                <GridView.Columns>
+                    <GridViewColumn Width="100" Header="Student" DisplayMemberBinding="{Binding Path=Studentname}"/>
+                    <GridViewColumn Width="100" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
+                    <GridViewColumn Width="100" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
+                </GridView.Columns>
+            </GridView>
+        </ListView.View>
+        </ListView>
     </Grid>
 </Window>
