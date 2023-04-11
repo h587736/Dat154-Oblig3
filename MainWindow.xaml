@@ -16,9 +16,11 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
             <TextBox x:Name="searchBox" Width="150" Margin="0,0,10,0"/>
             <Button x:Name="searchButton" Content="Search" Click="searchButton_Click"/>
+            <ComboBox x:Name="courseComboBox" Width="150" ItemsSource="{Binding Courses}" DisplayMemberPath="Coursecode" SelectedValuePath="Coursecode" SelectedValue="{Binding SelectedCourseCode}" Margin="10,0,10,0"/>
+            <Button x:Name="searchCourseButton" Content="Search Course" Click="searchCourseButton_Click"/>
         </StackPanel>
 
-        <ListView Name="studentList" ItemsSource="{Binding}" Grid.Row="1">
+        <ListView Name="studentList" ItemsSource="{Binding}" Grid.Row="1" Margin="0,0,400,0">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
@@ -26,6 +28,15 @@
                         <GridViewColumn Width="100" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
                         <GridViewColumn Width="100" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
                     </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView Name="courseStudentList" Grid.Row="1" Margin="400,0,0,0" ItemsSource="{Binding}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="100" Header="Student ID" DisplayMemberBinding="{Binding Path=Id}" />
+                    <GridViewColumn Width="100" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
                 </GridView>
             </ListView.View>
         </ListView>
