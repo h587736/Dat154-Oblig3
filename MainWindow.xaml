@@ -5,18 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Oblig3"
         mc:Ignorable="d"
+        
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListView Name="studentList" ItemsSource="{Binding}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <TextBox x:Name="searchBox" Width="150" Margin="0,0,10,0"/>
+            <Button x:Name="searchButton" Content="Search" Click="searchButton_Click"/>
+        </StackPanel>
+
+        <ListView Name="studentList" ItemsSource="{Binding}" Grid.Row="1">
             <ListView.View>
-            <GridView>
-                <GridView.Columns>
-                    <GridViewColumn Width="100" Header="Student" DisplayMemberBinding="{Binding Path=Studentname}"/>
-                    <GridViewColumn Width="100" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
-                    <GridViewColumn Width="100" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
-                </GridView.Columns>
-            </GridView>
-        </ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Width="100" Header="Student" DisplayMemberBinding="{Binding Path=Studentname}"/>
+                        <GridViewColumn Width="100" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
+                        <GridViewColumn Width="100" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
         </ListView>
     </Grid>
 </Window>

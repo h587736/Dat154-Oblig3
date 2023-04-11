@@ -36,7 +36,20 @@ namespace Oblig3
 
             dx.Students.Load();
 
-            studentList.DataContext = Students.OrderBy(s => s.Studentname);
+            studentList.ItemsSource = Students.OrderBy(s => s.Studentname);
+        }
+        private void searchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = searchBox.Text.Trim().ToLower();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                studentList.ItemsSource = Students.OrderBy(s => s.Studentname);
+            }
+            else
+            {
+                var filteredList = Students.Where(s => s.Studentname.ToLower().Contains(searchText)).ToList();
+                studentList.ItemsSource = filteredList;
+            }
         }
     }
 }
