@@ -30,8 +30,6 @@ namespace Oblig3
         private readonly LocalView<Student> Students;
         private readonly LocalView<Course> Courses;
         private readonly LocalView<Grade> Grades;
-        private readonly ObservableCollection<Student> CourseStudents = new();
-        private string SelectedCourseId;
 
         public MainWindow()
         {
@@ -39,14 +37,18 @@ namespace Oblig3
 
             Students = dx.Students.Local;
             Courses = dx.Courses.Local;
+            Grades = dx.Grades.Local;
 
             dx.Students.Load();
             dx.Courses.Load();
             dx.Grades.Load();
-
+            
             studentList.ItemsSource = Students.OrderBy(s => s.Studentname);
+
             courseComboBox.ItemsSource = Courses.OrderBy(c => c.Coursecode);
-            courseComboBox.DisplayMemberPath = "Coursename";
+            courseComboBox.DisplayMemberPath = "Coursecode";
+            courseStudentList.ItemsSource = Grades.OrderBy(g => g.Coursecode);
+
         }
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -63,29 +65,11 @@ namespace Oblig3
         }
         private void searchCourseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(SelectedCourseId))
-            {
-                var filteredList = dx.Grades.Where(g => g.Coursecode == SelectedCourseId).Select(g => g.Student).ToList();
-                courseStudentList.ItemsSource = filteredList.OrderBy(s => s.Id);
-            }
-
-        }
-
-        private void courseComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (courseComboBox.SelectedItem is Course selectedCourse)
-            {
-                SelectedCourseId = selectedCourse.Coursecode;
-                CourseStudents.Clear();
-                var filteredList = dx.Grades
-                    .Where(g => g.Coursecode == SelectedCourseId)
-                    .Select(g => g.Student)
-                    .ToList();
-                foreach (var student in filteredList.OrderBy(s => s.Studentname))
-                {
-                    CourseStudents.Add(student);
-                }
-                courseStudentList.ItemsSource = CourseStudents;
+            if (courseComboBox.SelectedItem != null) { 
+                Course selectedCourse = (Course)courseComboBox.SelectedItem;
+            string selectedCourseCode = selectedCourse.Coursecode;
+                var filteredList2 = Grades.Where(g => g.Coursecode == selectedCourseCode).ToList();
+                courseStudentList.ItemsSource = filteredList2;
             }
         }
     }

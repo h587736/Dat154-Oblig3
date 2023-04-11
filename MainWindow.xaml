@@ -32,10 +32,11 @@
             </ListView.View>
         </ListView>
 
-        <ListView Name="courseStudentList" Grid.Row="1" Margin="400,0,0,0" ItemsSource="{Binding}">
+        <ListView Name="courseStudentList" Grid.Row="1" Margin="400,0,0,0" ItemsSource="{Binding CourseStudents}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="100" Header="Student ID" DisplayMemberBinding="{Binding Path=Id}" />
+                    <GridViewColumn Width="100" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                    <GridViewColumn Width="100" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
                     <GridViewColumn Width="100" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
                 </GridView>
             </ListView.View>
