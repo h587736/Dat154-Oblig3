@@ -50,27 +50,67 @@ namespace Oblig3
             courseStudentList.ItemsSource = Grades.OrderBy(g => g.Coursecode);
 
         }
+        // Funksjon som håndterer søk av student.  listen oppdateres ved søk på navn til å bare inkludere
+        // studenter som har bokstavene som blir søkt på i navnet sitt.
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
             string searchText = searchBox.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(searchText))
             {
-                studentList.ItemsSource = Students.OrderBy(s => s.Studentname);
+               // Viser først alle studenter når det ikke er oppgitt noe i søkefeltet
+                    studentList.ItemsSource = Students.OrderBy(s => s.Studentname);
             }
             else
             {
+                // listen oppdateres ved søk på navn til å bare inkludere studenter som har bokstavene som blir søkt på i navnet sitt.
                 var filteredList = Students.Where(s => s.Studentname.ToLower().Contains(searchText)).ToList();
                 studentList.ItemsSource = filteredList;
             }
         }
+        // Funksjon som håndterer søk av emne
         private void searchCourseButton_Click(object sender, RoutedEventArgs e)
         {
+            // Dersom det blir valgt noe i comboboksen. Filtreres listen basert på emnekode i Grades og viser studentId, emnekode og karakter.
             if (courseComboBox.SelectedItem != null) { 
                 Course selectedCourse = (Course)courseComboBox.SelectedItem;
             string selectedCourseCode = selectedCourse.Coursecode;
                 var filteredList2 = Grades.Where(g => g.Coursecode == selectedCourseCode).ToList();
                 courseStudentList.ItemsSource = filteredList2;
             }
+        }
+        // Function that handles grade search
+        private void searchGradeButton_Click(object sender, RoutedEventArgs e)
+        {
+            String gradeSearchText = gradeSearchBox.Text.Trim().ToUpper();
+            // If input is given it compares the given grade with the other grades in the DB. 
+            // The grades are converted to numerical values by the help function GetGradeValue
+            // If the other grades have the same or bigger numerical value they are displayed.
+            if (!string.IsNullOrEmpty(gradeSearchBox.Text))
+            {
+                var filteredList3 = Grades.Where(g => GetGradeValue(g.Grade1) >= GetGradeValue(gradeSearchBox.Text)).ToList();
+                GradeList.ItemsSource = filteredList3;
+            }
+            else
+            {
+                // If no input was given after pressing the search button, all grades are displayed.
+                var filteredList3 = Grades.OrderBy(g => g.Studentid);
+                GradeList.ItemsSource = filteredList3;
+            }
+        }
+
+        //Hjelpe funksjon for å konverte karakterer til numeriske verdier
+        private int GetGradeValue(string grade)
+        {
+            return grade switch
+            {
+                "A" => 5,
+                "B" => 4,
+                "C" => 3,
+                "D" => 2,
+                "E" => 1,
+                "F" => 0,
+                _ => -1 // invalid grade
+            };
         }
     }
 }
