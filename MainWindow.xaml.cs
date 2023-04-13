@@ -85,10 +85,11 @@ namespace Oblig3
             // If input is given it compares the given grade with the other grades in the DB. 
             // The grades are converted to numerical values by the help function GetGradeValue
             // If the other grades have the same or bigger numerical value they are displayed.
-            if (!string.IsNullOrEmpty(gradeSearchBox.Text))
+
+            if (!string.IsNullOrEmpty(gradeSearchText))
             {
-                var filteredList3 = Grades.Where(g => GetGradeValue(g.Grade1) >= GetGradeValue(gradeSearchBox.Text)).ToList();
-                GradeList.ItemsSource = filteredList3;
+                    var filteredList3 = Grades.Where(g => GetGradeValue(g.Grade1) >= GetGradeValue(gradeSearchText)).ToList();
+                    GradeList.ItemsSource = filteredList3;
             }
             else
             {
@@ -97,8 +98,16 @@ namespace Oblig3
                 GradeList.ItemsSource = filteredList3;
             }
         }
+        //Class that handles the search for students that failed classes.
+        private void searchFailedButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Checks all grades and if they are equal to the numerical value for F (in other words they got an F) 
+            // If grade equals F it is put inito the filteres list
+            var filteredList4 = Grades.Where(g => GetGradeValue(g.Grade1).Equals(GetGradeValue("F"))).ToList();
+            FailedList.ItemsSource = filteredList4; 
+        }
 
-        //Hjelpe funksjon for å konverte karakterer til numeriske verdier
+        //Help class for converting grades to numerical values.
         private int GetGradeValue(string grade)
         {
             return grade switch
@@ -111,6 +120,15 @@ namespace Oblig3
                 "F" => 0,
                 _ => -1 // invalid grade
             };
+        }
+        // Help class for checking valid input
+        private bool IsValidGrade(string grade)
+        {
+            // Convert the grade to uppercase for case-insensitive validation
+            grade = grade.ToUpper();
+
+            // Check if the grade is between F and A
+            return grade.Length == 1 && grade[0] >= 'F' && grade[0] <= 'A';
         }
     }
 }
