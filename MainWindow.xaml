@@ -6,63 +6,100 @@
         xmlns:local="clr-namespace:Oblig3"
         mc:Ignorable="d"
         
-        Title="MainWindow" Height="450" Width="1200">
+        Title="MainWindow" Height="450" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <TextBox x:Name="searchBox" Width="150" Margin="0,0,10,0"/>
-            <Button x:Name="searchButton" Content="Search" Click="searchButton_Click"/>
-            <ComboBox x:Name="courseComboBox" Width="150" ItemsSource="{Binding Courses}" DisplayMemberPath="Coursecode" SelectedValuePath="Coursecode" SelectedValue="{Binding SelectedCourseCode}" Margin="75,0,10,0"/>
-            <Button x:Name="searchCourseButton" Content="Search Course" Click="searchCourseButton_Click"/>
-            <TextBox x:Name="gradeSearchBox" Width="150" Margin="50,0,10,0"/>
-            <Button x:Name="gradeSearchButton" Content="Search Grade" Click="searchGradeButton_Click"/>
-            <Button x:Name="failSearchButton" Content="Search Failed" Click="searchFailedButton_Click" Margin="10,0,10,0"/>
-        </StackPanel>
+        <TabControl Grid.Row="1" Margin="10">
+            <TabItem Header="All Students">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBox x:Name="searchBox" Width="150" Margin="0,0,10,0"/>
+                        <Button x:Name="searchButton" Content="Search" Click="searchButton_Click"/>
+                    </StackPanel>
+                    <ListView Name="studentList" ItemsSource="{Binding}" Grid.Row="1" Margin="0,0,524,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Width="90" Header="Student" DisplayMemberBinding="{Binding Path=Studentname}"/>
+                                    <GridViewColumn Width="90" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
+                                    <GridViewColumn Width="90" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </TabItem>
+            
+            <TabItem Header="Course Students">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+                        <ComboBox x:Name="courseComboBox" Width="150" ItemsSource="{Binding Courses}" DisplayMemberPath="Coursecode" SelectedValuePath="Coursecode" SelectedValue="{Binding SelectedCourseCode}" Margin="0,0,10,0"/>
+                        <Button x:Name="searchCourseButton" Content="Search" Click="searchCourseButton_Click"/>
+                    </StackPanel>
+                    <ListView Name="courseStudentList" Margin="0,0,525,0" ItemsSource="{Binding CourseStudents}" Grid.Row="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="90" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="90" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="90" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
 
-        <ListView Name="studentList" ItemsSource="{Binding}" Grid.Row="1" Margin="0,0,524,0">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
-                        <GridViewColumn Width="90" Header="Student" DisplayMemberBinding="{Binding Path=Studentname}"/>
-                        <GridViewColumn Width="90" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
-                        <GridViewColumn Width="90" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
+            <TabItem Header="Grade list">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+                        <TextBox x:Name="gradeSearchBox" Width="150" Margin="0,0,10,0"/>
+                        <Button x:Name="searchGradeButton" Content="Search" Click="searchGradeButton_Click"/>
+                    </StackPanel>
+                    <ListView Name="GradeList" Margin="0,0,551,0" ItemsSource="{Binding Grades}" RenderTransformOrigin="0.52,0.504" Grid.Row="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="85" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="85" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="85" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
 
-        <ListView Name="courseStudentList" Margin="276,0,249,0" ItemsSource="{Binding CourseStudents}" Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="90" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                    <GridViewColumn Width="90" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                    <GridViewColumn Width="90" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+            <TabItem Header="Failed List">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+                        <TextBox x:Name="failedSearchBox" Width="150" Margin="0,0,10,0"/>
+                        <Button x:Name="failedSearchButton" Content="Search Failed" Click="searchFailedButton_Click"/>
+                    </StackPanel>
+                    <ListView Name="FailedList" Margin="10" ItemsSource="{Binding FailedGrades}" Grid.Row="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="85" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="85" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="85" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
 
-        <ListView Name="GradeList" Margin="551,0,0,0" ItemsSource="{Binding Grades}" RenderTransformOrigin="0.52,0.504" Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="85" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                    <GridViewColumn Width="85" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                    <GridViewColumn Width="85" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        <ListView Name="FailedList" Margin="810,0,-259,0" ItemsSource="{Binding Grades}" RenderTransformOrigin="0.52,0.504" Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="85" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                    <GridViewColumn Width="85" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                    <GridViewColumn Width="85" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        </TabControl>
     </Grid>
 </Window>
