@@ -24,9 +24,9 @@
                         <ListView.View>
                             <GridView>
                                 <GridView.Columns>
-                                    <GridViewColumn Width="90" Header="Student" DisplayMemberBinding="{Binding Path=Studentname}"/>
-                                    <GridViewColumn Width="90" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
-                                    <GridViewColumn Width="90" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
+                                    <GridViewColumn Width="150" Header="Student" DisplayMemberBinding="{Binding Path=Studentname}"/>
+                                    <GridViewColumn Width="150" Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
+                                    <GridViewColumn Width="150" Header="Age" DisplayMemberBinding="{Binding Path=Studentage}"/>
                                 </GridView.Columns>
                             </GridView>
                         </ListView.View>
@@ -47,9 +47,9 @@
                     <ListView Name="courseStudentList" Margin="0,0,525,0" ItemsSource="{Binding CourseStudents}" Grid.Row="1">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="90" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                                <GridViewColumn Width="90" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                                <GridViewColumn Width="90" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                                <GridViewColumn Width="150" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="150" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="150" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -69,9 +69,9 @@
                     <ListView Name="GradeList" Margin="0,0,551,0" ItemsSource="{Binding Grades}" RenderTransformOrigin="0.52,0.504" Grid.Row="1">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="85" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                                <GridViewColumn Width="85" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                                <GridViewColumn Width="85" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                                <GridViewColumn Width="150" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="150" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="150" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -98,6 +98,26 @@
                         </ListView.View>
                     </ListView>
                 </Grid>
+            </TabItem>
+
+            <TabItem Header="Manage Participants">
+                <StackPanel Margin="10">
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                        <TextBlock Text="Course Code:" Width="100" VerticalAlignment="Center"/>
+                        <TextBox x:Name="courseIdTextBox" Width="200"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                        <TextBlock Text="Student ID:" Width="100" VerticalAlignment="Center"/>
+                        <TextBox x:Name="studentIdTextBox" Width="200"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                        <TextBlock Text="Grade:" Width="100" VerticalAlignment="Center"/>
+                        <TextBox x:Name="gradeTextBox" Width="200"/>
+                    </StackPanel>
+                    <Button x:Name="addStudentButton" Content="Add Student to Course" Click="addStudentButton_Click" Width="150" HorizontalAlignment="Left" Margin="10 5 0 0"/>
+                    <Button x:Name="removeStudentButton" Content="Remove Student from Course" Click="removeStudentButton_Click" Width="150" HorizontalAlignment="Left" Margin="10 5 0 0"/>
+                    <TextBlock x:Name="participantResultTextBlock" Margin="0 10 0 0"/>
+                </StackPanel>
             </TabItem>
 
         </TabControl>

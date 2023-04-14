@@ -107,6 +107,65 @@ namespace Oblig3
             FailedList.ItemsSource = filteredList4; 
         }
 
+        private void addStudentButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (var context = new Dat154Context())
+            {
+                var courseId = courseIdTextBox.Text;
+                var studentId = studentIdTextBox.Text;
+                var grade = gradeTextBox.Text;
+
+                var course = context.Courses.SingleOrDefault(c => c.Coursecode == courseId);
+                var student = context.Students.SingleOrDefault(s => s.Id == int.Parse(studentId));
+
+                if (course == null)
+                {
+                    participantResultTextBlock.Text = "Course not found";
+                    return;
+                }
+
+                if (student == null)
+                {
+                    participantResultTextBlock.Text = "Student not found";
+                    return;
+                }
+
+                var existingGrade = context.Grades.FirstOrDefault(g => g.Studentid == int.Parse(studentId) && g.Coursecode == courseId);
+                if (existingGrade != null)
+                {
+                    participantResultTextBlock.Text = "Student is already enrolled in the course";
+                    return;
+                }
+
+                var gradeObj = new Grade { Studentid = int.Parse(studentId), Coursecode = courseId, Grade1 = grade };
+                context.Grades.Add(gradeObj);
+                context.SaveChanges();
+
+                participantResultTextBlock.Text = "Student added to course";
+            }
+        }
+
+        private void removeStudentButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (var context = new Dat154Context())
+            {
+                var courseId = courseIdTextBox.Text;
+                var studentId = studentIdTextBox.Text;
+
+                var existingGrade = context.Grades.FirstOrDefault(g => g.Studentid == int.Parse(studentId) && g.Coursecode == courseId);
+                if (existingGrade == null)
+                {
+                    participantResultTextBlock.Text = "Student is not enrolled in the course";
+                    return;
+                }
+
+                context.Grades.Remove(existingGrade);
+                context.SaveChanges();
+
+                participantResultTextBlock.Text = "Student removed from course";
+            }
+        }
+
         //Help class for converting grades to numerical values.
         private int GetGradeValue(string grade)
         {
@@ -132,3 +191,4 @@ namespace Oblig3
         }
     }
 }
+
