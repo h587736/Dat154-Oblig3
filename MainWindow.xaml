@@ -44,12 +44,16 @@
                         <ComboBox x:Name="courseComboBox" Width="150" ItemsSource="{Binding Courses}" DisplayMemberPath="Coursecode" SelectedValuePath="Coursecode" SelectedValue="{Binding SelectedCourseCode}" Margin="0,0,10,0"/>
                         <Button x:Name="searchCourseButton" Content="Search" Click="searchCourseButton_Click"/>
                     </StackPanel>
-                    <ListView Name="courseStudentList" Margin="0,0,525,0" ItemsSource="{Binding CourseStudents}" Grid.Row="1">
+                    <ListView Name="courseStudentList" ItemsSource="{Binding CourseStudents}" Grid.Row="1">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="150" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                                <GridViewColumn Width="150" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                                <GridViewColumn Width="150" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                                <GridViewColumn Width="125" Header="Student name" DisplayMemberBinding="{Binding Path=Studentname}"/>
+                                <GridViewColumn Width="125" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="125" Header="Course name" DisplayMemberBinding="{Binding Path=Coursename}" />
+                                <GridViewColumn Width="125" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="125" Header="Semester" DisplayMemberBinding="{Binding Path=Semester}" />
+                                <GridViewColumn Width="125" Header="Course Teacher" DisplayMemberBinding="{Binding Path=Teacher}" />
+                                <GridViewColumn Width="125" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -66,12 +70,16 @@
                         <TextBox x:Name="gradeSearchBox" Width="150" Margin="0,0,10,0"/>
                         <Button x:Name="searchGradeButton" Content="Search" Click="searchGradeButton_Click"/>
                     </StackPanel>
-                    <ListView Name="GradeList" Margin="0,0,551,0" ItemsSource="{Binding Grades}" RenderTransformOrigin="0.52,0.504" Grid.Row="1">
+                    <ListView Name="GradeList" ItemsSource="{Binding Grades}" RenderTransformOrigin="0.52,0.504" Grid.Row="1">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="150" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                                <GridViewColumn Width="150" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                                <GridViewColumn Width="150" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                                <GridViewColumn Width="125" Header="Student name" DisplayMemberBinding="{Binding Path=Studentname}"/>
+                                <GridViewColumn Width="125" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="125" Header="Course name" DisplayMemberBinding="{Binding Path=Coursename}" />
+                                <GridViewColumn Width="125" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="125" Header="Semester" DisplayMemberBinding="{Binding Path=Semester}" />
+                                <GridViewColumn Width="125" Header="Course Teacher" DisplayMemberBinding="{Binding Path=Teacher}" />
+                                <GridViewColumn Width="125" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -85,15 +93,18 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-                        <TextBox x:Name="failedSearchBox" Width="150" Margin="0,0,10,0"/>
                         <Button x:Name="failedSearchButton" Content="Search Failed" Click="searchFailedButton_Click"/>
                     </StackPanel>
                     <ListView Name="FailedList" Margin="10" ItemsSource="{Binding FailedGrades}" Grid.Row="1">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="85" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
-                                <GridViewColumn Width="85" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
-                                <GridViewColumn Width="85" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
+                                <GridViewColumn Width="125" Header="Student name" DisplayMemberBinding="{Binding Path=Studentname}"/>
+                                <GridViewColumn Width="125" Header="Student ID" DisplayMemberBinding="{Binding Path=Studentid}" />
+                                <GridViewColumn Width="125" Header="Course name" DisplayMemberBinding="{Binding Path=Coursename}" />
+                                <GridViewColumn Width="125" Header="Course code" DisplayMemberBinding="{Binding Path=Coursecode}" />
+                                <GridViewColumn Width="125" Header="Semester" DisplayMemberBinding="{Binding Path=Semester}" />
+                                <GridViewColumn Width="125" Header="Course Teacher" DisplayMemberBinding="{Binding Path=Teacher}" />
+                                <GridViewColumn Width="125" Header="Grade" DisplayMemberBinding="{Binding Path=Grade1}" />
                             </GridView>
                         </ListView.View>
                     </ListView>

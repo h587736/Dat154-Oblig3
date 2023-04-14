@@ -44,39 +44,54 @@ namespace Oblig3
             dx.Grades.Load();
             
             studentList.ItemsSource = Students.OrderBy(s => s.Studentname);
-
             courseComboBox.ItemsSource = Courses.OrderBy(c => c.Coursecode);
-            courseComboBox.DisplayMemberPath = "Coursecode";
             courseStudentList.ItemsSource = Grades.OrderBy(g => g.Coursecode);
 
+            courseComboBox.DisplayMemberPath = "Coursecode";
+
         }
-        // Funksjon som håndterer søk av student.  listen oppdateres ved søk på navn til å bare inkludere
-        // studenter som har bokstavene som blir søkt på i navnet sitt.
+        // Class that handles search for studentnames. The list is updated based on the 
+        // students names that contain the characters searched for.
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
             string searchText = searchBox.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(searchText))
             {
-               // Viser først alle studenter når det ikke er oppgitt noe i søkefeltet
+               // If the search field is empty, all the students are displayed
                     studentList.ItemsSource = Students.OrderBy(s => s.Studentname);
             }
             else
             {
-                // listen oppdateres ved søk på navn til å bare inkludere studenter som har bokstavene som blir søkt på i navnet sitt.
+                // The list is filtered to student names that contain the searched for characters
                 var filteredList = Students.Where(s => s.Studentname.ToLower().Contains(searchText)).ToList();
                 studentList.ItemsSource = filteredList;
             }
         }
-        // Funksjon som håndterer søk av emne
+        // Class that handles the course search
         private void searchCourseButton_Click(object sender, RoutedEventArgs e)
         {
-            // Dersom det blir valgt noe i comboboksen. Filtreres listen basert på emnekode i Grades og viser studentId, emnekode og karakter.
-            if (courseComboBox.SelectedItem != null) { 
-                Course selectedCourse = (Course)courseComboBox.SelectedItem;
-            string selectedCourseCode = selectedCourse.Coursecode;
-                var filteredList2 = Grades.Where(g => g.Coursecode == selectedCourseCode).ToList();
+                // If something is selected in the combobox, the list is filtered to the relevant Coursecode
+                // and joins Student, and Course with Grade in order to aquire Coursename and Studentname
+                if (courseComboBox.SelectedItem != null)
+                {
+                    Course selectedCourse = (Course)courseComboBox.SelectedItem;
+                    string selectedCourseCode = selectedCourse.Coursecode;
+                var filteredList2 = from grade in Grades
+                                    join student in Students on grade.Studentid equals student.Id
+                                    join course in Courses on grade.Coursecode equals course.Coursecode
+                                    where grade.Coursecode == selectedCourseCode
+                                    select new
+                                    {
+                                        Studentname = student.Studentname,
+                                        Studentid = student.Id,
+                                        Coursecode = grade.Coursecode,
+                                        Semester = course.Semester,
+                                        Teacher = course.Teacher,
+                                        Coursename = course.Coursename,
+                                        Grade1 = grade.Grade1
+                                    };
                 courseStudentList.ItemsSource = filteredList2;
-            }
+                }
         }
         // Function that handles grade search
         private void searchGradeButton_Click(object sender, RoutedEventArgs e)
@@ -88,25 +103,66 @@ namespace Oblig3
 
             if (!string.IsNullOrEmpty(gradeSearchText))
             {
-                    var filteredList3 = Grades.Where(g => GetGradeValue(g.Grade1) >= GetGradeValue(gradeSearchText)).ToList();
-                    GradeList.ItemsSource = filteredList3;
+                var filteredList3 = from grade in Grades
+                                    join student in Students on grade.Studentid equals student.Id
+                                    join course in Courses on grade.Coursecode equals course.Coursecode
+                                    where GetGradeValue(grade.Grade1) >= GetGradeValue(gradeSearchText)
+                                    select new
+                                    {
+                                        Studentname = student.Studentname,
+                                        Studentid = student.Id,
+                                        Coursecode = grade.Coursecode,
+                                        Semester = course.Semester,
+                                        Teacher = course.Teacher,
+                                        Coursename = course.Coursename,
+                                        Grade1 = grade.Grade1
+                                    };
+
+                GradeList.ItemsSource = filteredList3;
             }
             else
             {
                 // If no input was given after pressing the search button, all grades are displayed.
-                var filteredList3 = Grades.OrderBy(g => g.Studentid);
+                var filteredList3 = from grade in Grades
+                                    join student in Students on grade.Studentid equals student.Id
+                                    join course in Courses on grade.Coursecode equals course.Coursecode
+                                    orderby grade.Studentid
+                                    select new
+                                    {
+                                        Studentname = student.Studentname,
+                                        Studentid = student.Id,
+                                        Coursecode = grade.Coursecode,
+                                        Semester = course.Semester,
+                                        Teacher = course.Teacher,
+                                        Coursename = course.Coursename,
+                                        Grade1 = grade.Grade1
+                                    };
+
                 GradeList.ItemsSource = filteredList3;
             }
         }
         //Class that handles the search for students that failed classes.
         private void searchFailedButton_Click(object sender, RoutedEventArgs e)
         {
-            // Checks all grades and if they are equal to the numerical value for F (in other words they got an F) 
-            // If grade equals F it is put inito the filteres list
-            var filteredList4 = Grades.Where(g => GetGradeValue(g.Grade1).Equals(GetGradeValue("F"))).ToList();
-            FailedList.ItemsSource = filteredList4; 
+            var filteredList4 = from grade in Grades
+                                join student in Students on grade.Studentid equals student.Id
+                                join course in Courses on grade.Coursecode equals course.Coursecode
+                                where GetGradeValue(grade.Grade1) == GetGradeValue("F") //All Grades that equals F are selected
+                                select new
+                                {
+                                    Studentname = student.Studentname,
+                                    Studentid = student.Id,
+                                    Coursecode = grade.Coursecode,
+                                    Semester = course.Semester,
+                                    Teacher = course.Teacher,
+                                    Coursename = course.Coursename,
+                                    Grade1 = grade.Grade1
+                                };
+
+            FailedList.ItemsSource = filteredList4;
         }
 
+        //Class for adding students to a course
         private void addStudentButton_Click(object sender, RoutedEventArgs e)
         {
             using (var context = new Dat154Context())
@@ -142,9 +198,13 @@ namespace Oblig3
                 context.SaveChanges();
 
                 participantResultTextBlock.Text = "Student added to course";
+
+                dx.Grades.Load();
+                dx.Students.Load();
+                dx.Courses.Load();
             }
         }
-
+        // Class for removing students from a course
         private void removeStudentButton_Click(object sender, RoutedEventArgs e)
         {
             using (var context = new Dat154Context())
@@ -163,6 +223,10 @@ namespace Oblig3
                 context.SaveChanges();
 
                 participantResultTextBlock.Text = "Student removed from course";
+
+                dx.Grades.Load();
+                dx.Students.Load();
+                dx.Courses.Load();
             }
         }
 
